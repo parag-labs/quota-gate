@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+
+# .NET
+bin/
+obj/
+
+# Java
+target/
+*.class

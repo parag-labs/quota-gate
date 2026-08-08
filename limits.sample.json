@@ -1,0 +1,11 @@
+{
+  "notes": "Declare provider-style limits per model. A model may carry several rules across different windows and scopes; a request must pass every rule that applies to it. scope is one of global|tenant|user. window_seconds sets the rolling window; buckets_per_window trades memory for edge precision (set precise=true for an exact per-event log).",
+  "rules": [
+    { "name": "gpt-4o fleet/min",   "model": "gpt-4o",         "scope": "global", "window_seconds": 60,    "max_tokens": 1000000, "max_requests": 10000 },
+    { "name": "gpt-4o tenant/min",  "model": "gpt-4o",         "scope": "tenant", "window_seconds": 60,    "max_tokens": 60000,   "max_requests": 500 },
+    { "name": "gpt-4o user/3h",     "model": "gpt-4o",         "scope": "user",   "window_seconds": 10800, "max_requests": 40 },
+    { "name": "gpt-4o tenant/day",  "model": "gpt-4o",         "scope": "tenant", "window_seconds": 86400, "max_cost": 250.0 },
+    { "name": "gemini tenant/min",  "model": "gemini-1.5-pro", "scope": "tenant", "window_seconds": 60,    "max_tokens": 32000,   "max_requests": 360 },
+    { "name": "gpt-4o concurrency", "model": "gpt-4o",         "scope": "tenant", "window_seconds": 60,    "max_concurrent": 20 }
+  ]
+}
