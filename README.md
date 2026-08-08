@@ -85,12 +85,23 @@ cd python && python src/cli.py ../limits.sample.json usage.jsonl
 
 | Language | Tests | Run |
 |----------|:-----:|-----|
-| Python | 28 | `cd python && pytest -q` |
-| C# (.NET 10) | 23 | `cd csharp && dotnet test` |
-| Java (17+) | 24 | `cd java && mvn test` |
+| Python | 33 | `cd python && pytest -q` |
+| C# (.NET 10) | 27 | `cd csharp && dotnet test` |
+| Java (17+) | 28 | `cd java && mvn test` |
 
 The core is pure and dependency-light; C# and Java ports follow the same
-"one behavior across languages" approach used elsewhere in parag-labs.
+"one behavior across languages" approach used elsewhere in parag-labs. Each language
+also carries a **stress suite** (`test_stress` / `QuotaGateStress*`) that proves the
+load-bearing properties in that port: bounded memory under heavy traffic, correct
+enforcement with out-of-order timestamps, and a high-volume sliding-window soak.
+
+## Design notes and numbers
+
+- **[RFC.md](RFC.md)** - why the bucketed sliding window is the default, the
+  accuracy-for-memory trade-off, the scope/reserve model, and the non-goals.
+- **[BENCHMARKS.md](BENCHMARKS.md)** - measured bounded-memory (bucketed vs exact log)
+  and hot-path decision latency (P50/P99/P99.9), with graphs. Reproduce with
+  `python bench/benchmark.py`.
 
 ## Known limitations
 

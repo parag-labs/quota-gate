@@ -1,0 +1,34 @@
+{
+  "decision_latency": {
+    "decisions": 200000,
+    "seconds": 12.7917,
+    "decisions_per_sec": 15635,
+    "p50_us": 37.5,
+    "p99_us": 147.4,
+    "p99_9_us": 1944.8,
+    "note": "throughput from a clean loop; percentiles from a separately sampled loop with per-call timing overhead"
+  },
+  "memory": {
+    "events": [
+      500,
+      1000,
+      2000,
+      4000,
+      8000
+    ],
+    "bucketed_kb": [
+      19.5,
+      19.5,
+      19.4,
+      19.4,
+      19.3
+    ],
+    "log_kb": [
+      65.9,
+      129.6,
+      253.2,
+      504.8,
+      1009.0
+    ]
+  }
+}

@@ -1,0 +1,3 @@
+# the benchmark harness needs matplotlib to render the graphs; the library and its
+# tests have no third-party dependencies.
+matplotlib>=3.7
