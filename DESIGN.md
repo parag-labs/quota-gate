@@ -21,6 +21,10 @@ discovering the cap in production. Concretely:
 3. Bounded, predictable memory regardless of traffic volume.
 4. A pluggable store so the same logic works single-process or Redis-backed.
 
+![admission decision](docs/diagrams/admission-decision.png)
+
+*(Source: [`docs/diagrams/admission-decision.excalidraw`](docs/diagrams/admission-decision.excalidraw) - editable in [excalidraw](https://aka.ms/excalidraw).)*
+
 ## Key design decision: bucketed sliding window as the default
 
 A sliding-window limiter has to answer "how much happened in the last W seconds?"
