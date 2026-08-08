@@ -13,8 +13,8 @@ import com.quotagate.Store.InMemoryStore;
 /**
  * The gate: evaluate provider-style limits before a call, reserve/reconcile
  * tokens, cap concurrency, and emit standard back-pressure signals. Mirrors how
- * OpenAI/Azure and Gemini meter: many limits per model enforced together, across
- * global/tenant/user scopes, with reserve-then-reconcile token accounting.
+ * model-serving APIs meter in practice: many limits per model enforced together,
+ * across global/tenant/user scopes, with reserve-then-reconcile token accounting.
  */
 public final class Limiter {
 
