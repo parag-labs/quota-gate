@@ -1,4 +1,4 @@
-"""Reserve on the estimate, then reconcile to the actual - OpenAI's meter model."""
+"""Reserve on the estimate, then reconcile to the actual - the standard meter model."""
 
 from __future__ import annotations
 

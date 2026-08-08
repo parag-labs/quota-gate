@@ -1,7 +1,7 @@
 """The gate: evaluate provider-style limits before a call, reserve/reconcile
 tokens, cap concurrency, and emit standard back-pressure signals.
 
-Design mirrors how OpenAI/Azure and Gemini actually meter:
+Design mirrors how model-serving APIs meter in practice:
 
 - Multiple limits per model enforced *together* (RPM + TPM + daily + cost).
 - Hierarchical *scopes*: a request must clear the global fleet cap, its tenant's
@@ -10,8 +10,8 @@ Design mirrors how OpenAI/Azure and Gemini actually meter:
   failed call), so a large requested completion counts against you immediately
   and is reconciled afterwards.
 - Concurrency slots cap in-flight requests per scope.
-- On denial, a precise ``retry_after`` and an optional cheaper-model fallback,
-  the way ChatGPT/Copilot degrade instead of hard-failing.
+- On denial, a precise ``retry_after`` and an optional cheaper-model fallback, so
+  callers can degrade gracefully instead of hard-failing.
 """
 
 from __future__ import annotations
