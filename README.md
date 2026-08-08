@@ -97,7 +97,7 @@ enforcement with out-of-order timestamps, and a high-volume sliding-window soak.
 
 ## Design notes and numbers
 
-- **[RFC.md](RFC.md)** - why the bucketed sliding window is the default, the
+- **[DESIGN.md](DESIGN.md)** - why the bucketed sliding window is the default, the
   accuracy-for-memory trade-off, the scope/reserve model, and the non-goals.
 - **[BENCHMARKS.md](BENCHMARKS.md)** - measured bounded-memory (bucketed vs exact log)
   and hot-path decision latency (P50/P99/P99.9), with graphs. Reproduce with
