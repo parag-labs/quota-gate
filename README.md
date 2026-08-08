@@ -1,7 +1,7 @@
 # quota-gate
 
-A client-side rate limiter for LLM APIs. You declare the same limits the
-providers enforce - requests and tokens per rolling window, per day, per dollar -
+A rate limiter for LLM API traffic. You declare the same limits a model-serving
+provider enforces - requests and tokens per rolling window, per day, per dollar -
 and the gate tells you *before* each call whether to send, and if not, exactly how
 long to wait. Shape your own traffic instead of discovering a `429` in production.
 
@@ -10,7 +10,7 @@ getting throttled.
 
 ## Why
 
-OpenAI/Azure and Gemini cap you per model on several axes at once - **RPM**
+Model-serving providers cap you per model on several axes at once - **RPM**
 (requests/min), **TPM** (tokens/min), often **RPD/TPD** per day - and enforce those
 caps per org, per project, and per key. Hit any one and you get a `429` with a
 `Retry-After`. Most apps meet these limits by surprise. quota-gate lets you mirror
@@ -21,16 +21,16 @@ them locally and decide up front.
 - **Many limits per model, enforced together** - a request must clear every rule
   that applies (a 60s TPM+RPM rule *and* a daily cap *and* a spend cap).
 - **Hierarchical scopes** - `global` (whole fleet), `tenant` (one customer), and
-  `user` (one person, e.g. "40 messages / 3h" the way ChatGPT does it). The
-  toughest applicable rule wins, and the decision tells you which one and why.
+  `user` (one person, e.g. "40 messages / 3h"). The toughest applicable rule wins,
+  and the decision tells you which one and why.
 - **Reserve → commit / refund** - reserve on the estimated `max_tokens` up front
   (a big requested completion counts immediately), then commit the actual usage or
-  refund a failed call. This is how OpenAI's meter reconciles.
+  refund a failed call. This matches how a usage meter reconciles.
 - **Concurrency slots** - cap in-flight requests per scope with a context manager.
 - **Precise back-pressure** - a `retry_after` you can sleep on, plus a helper that
   renders standard `X-RateLimit-*` / `Retry-After` headers.
-- **Graceful degradation** - on denial, an optional cheaper-model fallback, the way
-  ChatGPT/Copilot downgrade instead of hard-failing.
+- **Graceful degradation** - on denial, an optional cheaper-model fallback, so
+  callers can downgrade instead of hard-failing.
 - **Pluggable store** - an in-memory default; implement the same `Store` interface
   over Redis for distributed enforcement across replicas.
 
@@ -52,7 +52,7 @@ from rules import LimitRule, Scope
 limiter = Limiter([
     LimitRule("gpt-4o", scope=Scope.GLOBAL, window_seconds=60,     max_tokens=1_000_000),
     LimitRule("gpt-4o", scope=Scope.TENANT, window_seconds=60,     max_tokens=60_000, max_requests=500),
-    LimitRule("gpt-4o", scope=Scope.USER,   window_seconds=10_800, max_requests=40),   # 3h, ChatGPT-style
+    LimitRule("gpt-4o", scope=Scope.USER,   window_seconds=10_800, max_requests=40),   # 40 msgs / 3h per user
 ])
 
 d = limiter.try_acquire("gpt-4o", tokens=1_200, tenant="acme", user="parag")
