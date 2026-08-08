@@ -1,4 +1,4 @@
-# RFC 0001: quota-gate design, trade-offs, and non-goals
+# quota-gate: design, trade-offs, and non-goals
 
 Status: accepted
 Author: Parag Sawant
