@@ -86,6 +86,7 @@ cd python && python src/cli.py ../limits.sample.json usage.jsonl
 | Language | Tests | Run |
 |----------|:-----:|-----|
 | Python | 28 | `cd python && pytest -q` |
+| C# (.NET 10) | 23 | `cd csharp && dotnet test` |
 
 The core is pure and dependency-light; C# and Java ports follow the same
 "one behavior across languages" approach used elsewhere in parag-labs.
