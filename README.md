@@ -98,8 +98,7 @@ enforcement with out-of-order timestamps, and a high-volume sliding-window soak.
 ## Design notes and numbers
 
 - **[DESIGN.md](DESIGN.md)** - why the bucketed sliding window is the default, the
-  accuracy-for-memory trade-off, the scope/reserve model, and the non-goals. Includes an
-  [admission-decision diagram](docs/diagrams/admission-decision.png).
+  accuracy-for-memory trade-off, the scope/reserve model, and the non-goals.
 - **[BENCHMARKS.md](BENCHMARKS.md)** - measured bounded-memory (bucketed vs exact log)
   and hot-path decision latency (P50/P99/P99.9), with graphs. Reproduce with
   `python bench/benchmark.py`.
@@ -143,7 +142,6 @@ quota-gate/
 ├── csharp/         .NET 10 port - Limiter, Rules, Store, and the stress suite
 ├── java/           JDK 17+ port (Maven)
 ├── bench/          benchmark.py - sliding-window vs the naive approaches
-├── docs/diagrams/  architecture diagrams
 ├── limits.sample.json  an example per-model / per-tenant budget config
 ├── DESIGN.md       reserve-then-reconcile, sliding windows, the failure mode
 └── BENCHMARKS.md   reproducible numbers
