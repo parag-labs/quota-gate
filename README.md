@@ -113,4 +113,19 @@ enforcement with out-of-order timestamps, and a high-volume sliding-window soak.
 - **Cost rules are only as good as the price table** in `pricing.py`; wire your own
   numbers (or token-lens's provider model) if you rate against negotiated pricing.
 
+## Layout
+
+```
+quota-gate/
+├── python/         reference implementation + pytest suite
+├── csharp/         .NET 10 port - Limiter, Rules, Store, and the stress suite
+├── java/           JDK 17+ port (Maven)
+├── bench/          benchmark.py - sliding-window vs the naive approaches
+├── docs/diagrams/  architecture diagrams
+├── limits.sample.json  an example per-model / per-tenant budget config
+├── DESIGN.md       reserve-then-reconcile, sliding windows, the failure mode
+└── BENCHMARKS.md   reproducible numbers
+```
+
+
 Part of [parag-labs](https://github.com/parag-labs) - small, focused tools for building AI systems you can trust.
