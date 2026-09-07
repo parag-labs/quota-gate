@@ -117,18 +117,18 @@ enforcement with out-of-order timestamps, and a high-volume sliding-window soak.
 
 ```mermaid
 flowchart LR
-  classDef proc fill:#4a90e2,stroke:#2c5aa0,color:#fff
-  classDef good fill:#27ae60,stroke:#1e8449,color:#fff
-  classDef bad fill:#e74c3c,stroke:#c0392b,color:#fff
-  classDef work fill:#8e44ad,stroke:#6c3483,color:#fff
-  CALL["model call<br/>(model, scope keys)"]:::proc
-  SCOPE["resolve scopes<br/>global - tenant - user"]:::work
-  CHECK["check every limit together<br/>requests/min - tokens/min<br/>daily cap - spend cap"]:::work
-  STORE[("bucketed sliding-window store<br/>pluggable: memory / Redis - O(1)")]:::proc
-  DEC{"any limit<br/>exceeded?"}:::work
-  REJECT["REJECT<br/>(429 avoided)"]:::bad
-  ADMIT["ADMIT<br/>+ record usage"]:::good
-  CALL --> SCOPE --> CHECK
+  classDef proc fill:#eff6ff,stroke:#3b82f6,color:#1e3a8a
+  classDef good fill:#f0fdf4,stroke:#22c55e,color:#14532d
+  classDef bad fill:#fef2f2,stroke:#ef4444,color:#7f1d1d
+  classDef work fill:#faf5ff,stroke:#a855f7,color:#581c87
+  classDef store fill:#f0f9ff,stroke:#0ea5e9,color:#0c4a6e
+  CALL["Model call"]:::proc
+  CHECK["Check limits"]:::work
+  STORE[("Sliding windows")]:::store
+  DEC{"Exceeded?"}:::work
+  REJECT["Reject early"]:::bad
+  ADMIT["Admit"]:::good
+  CALL --> CHECK
   STORE --> CHECK
   CHECK --> DEC
   DEC -->|yes| REJECT
