@@ -113,6 +113,28 @@ enforcement with out-of-order timestamps, and a high-volume sliding-window soak.
 - **Cost rules are only as good as the price table** in `pricing.py`; wire your own
   numbers (or token-lens's provider model) if you rate against negotiated pricing.
 
+## How it works
+
+```mermaid
+flowchart LR
+  classDef proc fill:#4a90e2,stroke:#2c5aa0,color:#fff
+  classDef good fill:#27ae60,stroke:#1e8449,color:#fff
+  classDef bad fill:#e74c3c,stroke:#c0392b,color:#fff
+  classDef work fill:#8e44ad,stroke:#6c3483,color:#fff
+  CALL["model call<br/>(model, scope keys)"]:::proc
+  SCOPE["resolve scopes<br/>global - tenant - user"]:::work
+  CHECK["check every limit together<br/>requests/min - tokens/min<br/>daily cap - spend cap"]:::work
+  STORE[("bucketed sliding-window store<br/>pluggable: memory / Redis - O(1)")]:::proc
+  DEC{"any limit<br/>exceeded?"}:::work
+  REJECT["REJECT<br/>(429 avoided)"]:::bad
+  ADMIT["ADMIT<br/>+ record usage"]:::good
+  CALL --> SCOPE --> CHECK
+  STORE --> CHECK
+  CHECK --> DEC
+  DEC -->|yes| REJECT
+  DEC -->|no| ADMIT
+```
+
 ## Layout
 
 ```
