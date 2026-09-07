@@ -23,7 +23,7 @@ discovering the cap in production. Concretely:
 
 ![admission decision](docs/diagrams/admission-decision.png)
 
-*(Source: [`docs/diagrams/admission-decision.excalidraw`](docs/diagrams/admission-decision.excalidraw) - editable in [excalidraw](https://aka.ms/excalidraw).)*
+*(The same diagram renders inline as Mermaid in the [README](README.md#how-it-works); this PNG is a static export.)*
 
 ## Key design decision: bucketed sliding window as the default
 
