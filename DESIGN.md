@@ -23,7 +23,7 @@ discovering the cap in production. Concretely:
 
 ![admission decision](docs/diagrams/admission-decision.png)
 
-*(The same diagram renders inline as Mermaid in the [README](README.md#how-it-works); this PNG is a static export.)*
+*(A call is admitted only if it clears every applicable rule across the global, tenant and user scopes at once; on a breach the rule with the longest `retry_after` is the one reported. The lower band shows the reserve-then-reconcile lifecycle that keeps counters honest around the actual call.)*
 
 ## Key design decision: bucketed sliding window as the default
 
