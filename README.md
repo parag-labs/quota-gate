@@ -88,12 +88,19 @@ cd python && python src/cli.py ../limits.sample.json usage.jsonl
 | Python | 33 | `cd python && pytest -q` |
 | C# (.NET 10) | 27 | `cd csharp && dotnet test` |
 | Java (17+) | 28 | `cd java && mvn test` |
+| Go (1.22+) | 33 | `cd go && go test ./...` |
+| Rust | 34 | `cd rust && cargo test` |
+| TypeScript | 34 | `cd ts && npm install && npm test` |
 
-The core is pure and dependency-light; C# and Java ports follow the same
-"one behavior across languages" approach used elsewhere in parag-labs. Each language
-also carries a **stress suite** (`test_stress` / `QuotaGateStress*`) that proves the
-load-bearing properties in that port: bounded memory under heavy traffic, correct
-enforcement with out-of-order timestamps, and a high-volume sliding-window soak.
+The core is pure and dependency-light; the Go, Rust, TypeScript, C# and Java ports
+follow the same "one behavior across languages" approach used elsewhere in
+parag-labs. Each language also carries a **stress suite** (`test_stress` /
+`QuotaGateStress*` / `stress_test.go` / `tests/stress.rs` / `stress.test.ts`) that
+proves the load-bearing properties in that port: bounded memory under heavy traffic,
+correct enforcement with out-of-order timestamps, and a high-volume sliding-window
+soak. The in-memory store is single-process and not thread-safe by construction, so
+the threaded stress test shards a limiter per worker (as DESIGN.md recommends) rather
+than sharing one across threads.
 
 ## Design notes and numbers
 
@@ -141,6 +148,9 @@ quota-gate/
 ├── python/         reference implementation + pytest suite
 ├── csharp/         .NET 10 port - Limiter, Rules, Store, and the stress suite
 ├── java/           JDK 17+ port (Maven)
+├── go/             Go 1.22+ port (go test)
+├── rust/           Rust port (cargo test) - lib + integration tests
+├── ts/             TypeScript port (vitest) - strict tsconfig, ESM
 ├── bench/          benchmark.py - sliding-window vs the naive approaches
 ├── limits.sample.json  an example per-model / per-tenant budget config
 ├── DESIGN.md       reserve-then-reconcile, sliding windows, the failure mode
