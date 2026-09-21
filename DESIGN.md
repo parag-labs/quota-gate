@@ -25,6 +25,13 @@ discovering the cap in production. Concretely:
 
 *(A call is admitted only if it clears every applicable rule across the global, tenant and user scopes at once; on a breach the rule with the longest `retry_after` is the one reported. The lower band shows the reserve-then-reconcile lifecycle that keeps counters honest around the actual call.)*
 
+<details>
+<summary>Before the redraw - the earlier version of this diagram</summary>
+
+![admission decision, before the redraw](docs/diagrams/admission-decision-v1.png)
+
+</details>
+
 ## Key design decision: bucketed sliding window as the default
 
 A sliding-window limiter has to answer "how much happened in the last W seconds?"
