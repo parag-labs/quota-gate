@@ -87,7 +87,10 @@ both: bucket memory stays flat while the log grows linearly.
 - **Not a proxy or gateway.** It answers "may I send this?"; it doesn't make the call,
   retry, or queue for you. That's the caller's loop.
 - **No distributed coordination in-box.** No gossip, no leader; that lives in the
-  store implementation you plug in.
+  store implementation you plug in — or in
+  [lease-pool](https://github.com/parag-labs/lease-pool), which takes that problem
+  seriously: one budget leased across surfaces that are genuinely separate processes,
+  so each decides locally instead of paying a round-trip per call.
 - **Not a billing system.** The optional cost helper is for `max_cost` rules, not an
   invoice of record.
 

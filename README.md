@@ -6,7 +6,8 @@ and the gate tells you *before* each call whether to send, and if not, exactly h
 long to wait. Shape your own traffic instead of discovering a `429` in production.
 
 token-lens tells you what you spent; quota-gate stops you from overspending or
-getting throttled.
+getting throttled; [lease-pool](https://github.com/parag-labs/lease-pool) shares one
+person's budget across the separate processes they use the model from.
 
 ## Why
 
