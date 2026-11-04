@@ -3,8 +3,9 @@ package com.quotagate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /** Rule definitions: what to limit, over which window, at which scope. */
 public final class Rules {
@@ -127,7 +128,7 @@ public final class Rules {
         }
     }
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper MAPPER = JsonMapper.builder().build();
 
     public static List<LimitRule> fromJson(String text) {
         try {
@@ -135,7 +136,7 @@ public final class Rules {
             List<LimitRule> rules = new ArrayList<>();
             for (JsonNode row : root.get("rules")) {
                 LimitRule.Builder b = LimitRule.builder(
-                        row.get("model").asText(), row.get("window_seconds").asDouble());
+                        row.get("model").asString(), row.get("window_seconds").asDouble());
                 if (row.has("max_tokens")) {
                     b.maxTokens(row.get("max_tokens").asDouble());
                 }
@@ -149,7 +150,7 @@ public final class Rules {
                     b.maxConcurrent(row.get("max_concurrent").asInt());
                 }
                 if (row.has("scope")) {
-                    b.scope(Scope.valueOf(row.get("scope").asText().toUpperCase()));
+                    b.scope(Scope.valueOf(row.get("scope").asString().toUpperCase()));
                 }
                 if (row.has("buckets_per_window")) {
                     b.bucketsPerWindow(row.get("buckets_per_window").asInt());
@@ -158,7 +159,7 @@ public final class Rules {
                     b.precise(row.get("precise").asBoolean());
                 }
                 if (row.has("name")) {
-                    b.name(row.get("name").asText());
+                    b.name(row.get("name").asString());
                 }
                 rules.add(b.build());
             }

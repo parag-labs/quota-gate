@@ -87,7 +87,7 @@ cd python && python src/cli.py ../limits.sample.json usage.jsonl
 | Language | Tests | Run |
 |----------|:-----:|-----|
 | Python (3.15) | 33 | `cd python && pytest -q` |
-| C# (.NET 10) | 27 | `cd csharp && dotnet test` |
+| C# (.NET 10, xUnit v3) | 27 | `cd csharp && dotnet test` |
 | Java (25) | 28 | `cd java && mvn test` |
 | Go (1.27+) | 33 | `cd go && go test ./...` |
 | Rust (1.99+, edition 2024) | 34 | `cd rust && cargo test` |
