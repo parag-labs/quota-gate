@@ -3,9 +3,11 @@
 use quota_gate::{Acquire, LimitRule, Limiter, Scope};
 
 fn scoped_limiter(max_requests: f64, scope: Scope) -> Limiter {
-    Limiter::new(vec![LimitRule::new("gpt-4o", 60.0)
-        .max_requests(max_requests)
-        .scope(scope)])
+    Limiter::new(vec![
+        LimitRule::new("gpt-4o", 60.0)
+            .max_requests(max_requests)
+            .scope(scope),
+    ])
 }
 
 #[test]

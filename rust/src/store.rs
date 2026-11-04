@@ -89,11 +89,11 @@ impl Window for BucketWindow {
     }
 
     fn adjust(&mut self, handle: &Handle, deltas: [f64; 3]) {
-        if let Handle::Bucket(idx) = handle {
-            if let Some(v) = self.buckets.get_mut(idx) {
-                for (slot, d) in v.iter_mut().zip(deltas) {
-                    *slot += d;
-                }
+        if let Handle::Bucket(idx) = handle
+            && let Some(v) = self.buckets.get_mut(idx)
+        {
+            for (slot, d) in v.iter_mut().zip(deltas) {
+                *slot += d;
             }
         }
     }
@@ -185,12 +185,12 @@ impl Window for PreciseWindow {
     }
 
     fn adjust(&mut self, handle: &Handle, deltas: [f64; 3]) {
-        if let Handle::Precise(id) = handle {
-            if let Some(e) = self.events.iter_mut().find(|e| e.id == *id) {
-                e.tokens += deltas[TOKENS];
-                e.requests += deltas[REQUESTS];
-                e.cost += deltas[COST];
-            }
+        if let Handle::Precise(id) = handle
+            && let Some(e) = self.events.iter_mut().find(|e| e.id == *id)
+        {
+            e.tokens += deltas[TOKENS];
+            e.requests += deltas[REQUESTS];
+            e.cost += deltas[COST];
         }
     }
 
@@ -318,10 +318,10 @@ impl Store for InMemoryStore {
     }
 
     fn release_concurrency(&mut self, key: &str) {
-        if let Some(c) = self.concurrency.get_mut(key) {
-            if *c > 0 {
-                *c -= 1;
-            }
+        if let Some(c) = self.concurrency.get_mut(key)
+            && *c > 0
+        {
+            *c -= 1;
         }
     }
 

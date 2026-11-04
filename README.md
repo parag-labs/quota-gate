@@ -86,12 +86,12 @@ cd python && python src/cli.py ../limits.sample.json usage.jsonl
 
 | Language | Tests | Run |
 |----------|:-----:|-----|
-| Python | 33 | `cd python && pytest -q` |
+| Python (3.15) | 33 | `cd python && pytest -q` |
 | C# (.NET 10) | 27 | `cd csharp && dotnet test` |
-| Java (17+) | 28 | `cd java && mvn test` |
-| Go (1.22+) | 33 | `cd go && go test ./...` |
-| Rust | 34 | `cd rust && cargo test` |
-| TypeScript | 34 | `cd ts && npm install && npm test` |
+| Java (25) | 28 | `cd java && mvn test` |
+| Go (1.27+) | 33 | `cd go && go test ./...` |
+| Rust (1.99+, edition 2024) | 34 | `cd rust && cargo test` |
+| TypeScript (Node 26 LTS) | 34 | `cd ts && npm install && npm test` |
 
 The core is pure and dependency-light; the Go, Rust, TypeScript, C# and Java ports
 follow the same "one behavior across languages" approach used elsewhere in
@@ -148,8 +148,8 @@ flowchart LR
 quota-gate/
 ├── python/         reference implementation + pytest suite
 ├── csharp/         .NET 10 port - Limiter, Rules, Store, and the stress suite
-├── java/           JDK 17+ port (Maven)
-├── go/             Go 1.22+ port (go test)
+├── java/           JDK 25 port (Maven)
+├── go/             Go 1.27+ port (go test)
 ├── rust/           Rust port (cargo test) - lib + integration tests
 ├── ts/             TypeScript port (vitest) - strict tsconfig, ESM
 ├── bench/          benchmark.py - sliding-window vs the naive approaches

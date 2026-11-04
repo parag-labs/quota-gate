@@ -3,9 +3,11 @@
 use quota_gate::{Acquire, LimitRule, Limiter, Scope};
 
 fn concurrency_limiter() -> Limiter {
-    Limiter::new(vec![LimitRule::new("gpt-4o", 60.0)
-        .max_concurrent(2)
-        .scope(Scope::Tenant)])
+    Limiter::new(vec![
+        LimitRule::new("gpt-4o", 60.0)
+            .max_concurrent(2)
+            .scope(Scope::Tenant),
+    ])
 }
 
 #[test]

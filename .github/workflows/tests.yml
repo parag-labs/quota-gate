@@ -12,10 +12,10 @@ jobs:
       run:
         working-directory: python
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.11"
+          python-version: "3.15"
       - run: pip install pytest
       - run: pytest -q
 
@@ -25,10 +25,10 @@ jobs:
       run:
         working-directory: csharp
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-dotnet@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: "10.0.x"
+          global-json-file: global.json
       - run: dotnet test
 
   java:
@@ -37,11 +37,11 @@ jobs:
       run:
         working-directory: java
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-java@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "25"
       - run: mvn -q test
 
   go:
@@ -50,10 +50,10 @@ jobs:
       run:
         working-directory: go
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
-          go-version: "1.23"
+          go-version-file: go/go.mod
       - run: go vet ./...
       - run: go test ./...
 
@@ -63,7 +63,7 @@ jobs:
       run:
         working-directory: rust
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
@@ -77,10 +77,10 @@ jobs:
       run:
         working-directory: ts
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version-file: ts/.nvmrc
       - run: npm install
       - run: npm run lint
       - run: npm test

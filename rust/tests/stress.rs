@@ -34,9 +34,11 @@ impl Rng {
 fn memory_is_bounded_under_heavy_traffic() {
     // A 1-hour window split into 60 buckets. No matter how many events we push,
     // the store must never hold more than ~60 buckets for this key.
-    let mut l = Limiter::new(vec![LimitRule::new("gpt-4o", 3600.0)
-        .max_tokens(1e12)
-        .buckets_per_window(60)]);
+    let mut l = Limiter::new(vec![
+        LimitRule::new("gpt-4o", 3600.0)
+            .max_tokens(1e12)
+            .buckets_per_window(60),
+    ]);
     for i in 0..100_000 {
         l.try_acquire("gpt-4o", &Acquire::new().tokens(1.0).now(i as f64 * 0.072));
     }
@@ -50,9 +52,11 @@ fn memory_is_bounded_under_heavy_traffic() {
 #[test]
 fn precise_mode_grows_but_stays_correct() {
     // The exact-log mode grows with in-window traffic but stays exact.
-    let mut l = Limiter::new(vec![LimitRule::new("gpt-4o", 60.0)
-        .max_requests(100.0)
-        .precise(true)]);
+    let mut l = Limiter::new(vec![
+        LimitRule::new("gpt-4o", 60.0)
+            .max_requests(100.0)
+            .precise(true),
+    ]);
     let mut allowed = 0;
     for _ in 0..500 {
         if l.try_acquire("gpt-4o", &Acquire::new().now(1000.0)).allowed {
@@ -85,9 +89,11 @@ fn high_volume_soak_keeps_the_cap() {
     let cap = 1000_i64;
     let buckets = 60_i64;
     let tolerance = cap / buckets + 1; // ~one bucket's worth of edge error
-    let mut l = Limiter::new(vec![LimitRule::new("gpt-4o", 60.0)
-        .max_requests(cap as f64)
-        .buckets_per_window(buckets)]);
+    let mut l = Limiter::new(vec![
+        LimitRule::new("gpt-4o", 60.0)
+            .max_requests(cap as f64)
+            .buckets_per_window(buckets),
+    ]);
 
     let mut admitted: VecDeque<f64> = VecDeque::new();
     let mut t = 0.0_f64;
@@ -118,9 +124,11 @@ fn threaded_access_does_not_corrupt_counters() {
     let mut handles = Vec::new();
     for i in 0..8 {
         handles.push(thread::spawn(move || {
-            let mut l = Limiter::new(vec![LimitRule::new("gpt-4o", 3600.0)
-                .max_requests(1e9)
-                .scope(Scope::Tenant)]);
+            let mut l = Limiter::new(vec![
+                LimitRule::new("gpt-4o", 3600.0)
+                    .max_requests(1e9)
+                    .scope(Scope::Tenant),
+            ]);
             let tenant = format!("t{i}");
             let mut allowed = 0;
             for j in 0..5000 {

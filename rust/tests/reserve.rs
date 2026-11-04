@@ -3,9 +3,11 @@
 use quota_gate::{Acquire, LimitRule, Limiter, Scope};
 
 fn reserve_limiter() -> Limiter {
-    Limiter::new(vec![LimitRule::new("gpt-4o", 60.0)
-        .max_tokens(1000.0)
-        .scope(Scope::Global)])
+    Limiter::new(vec![
+        LimitRule::new("gpt-4o", 60.0)
+            .max_tokens(1000.0)
+            .scope(Scope::Global),
+    ])
 }
 
 #[test]
@@ -66,7 +68,7 @@ fn double_commit_is_a_noop() {
     let mut res = res.unwrap();
     l.commit(&mut res, Some(500.0), None);
     l.commit(&mut res, Some(999.0), None); // ignored
-                                           // Used is 500, so 400 still fits but 600 does not.
+    // Used is 500, so 400 still fits but 600 does not.
     assert!(
         l.try_acquire("gpt-4o", &Acquire::new().tokens(400.0).now(0.0))
             .allowed

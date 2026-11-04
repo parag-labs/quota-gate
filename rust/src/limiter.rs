@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::rules::{LimitRule, Scope};
-use crate::store::{Handle, InMemoryStore, Store, COST, REQUESTS, TOKENS};
+use crate::store::{COST, Handle, InMemoryStore, REQUESTS, Store, TOKENS};
 
 /// The result of an admission check.
 #[derive(Debug, Clone)]
@@ -217,20 +217,20 @@ impl Limiter {
                 self.store
                     .snapshot(&key, now, r.window_seconds, r.bucket_seconds());
             let mut breaches: Vec<(usize, f64)> = Vec::new();
-            if let Some(mt) = r.max_tokens {
-                if used_t + a.tokens > mt + 1e-9 {
-                    breaches.push((TOKENS, used_t + a.tokens - mt));
-                }
+            if let Some(mt) = r.max_tokens
+                && used_t + a.tokens > mt + 1e-9
+            {
+                breaches.push((TOKENS, used_t + a.tokens - mt));
             }
-            if let Some(mr) = r.max_requests {
-                if used_r + 1.0 > mr + 1e-9 {
-                    breaches.push((REQUESTS, used_r + 1.0 - mr));
-                }
+            if let Some(mr) = r.max_requests
+                && used_r + 1.0 > mr + 1e-9
+            {
+                breaches.push((REQUESTS, used_r + 1.0 - mr));
             }
-            if let Some(mc) = r.max_cost {
-                if used_c + a.cost > mc + 1e-9 {
-                    breaches.push((COST, used_c + a.cost - mc));
-                }
+            if let Some(mc) = r.max_cost
+                && used_c + a.cost > mc + 1e-9
+            {
+                breaches.push((COST, used_c + a.cost - mc));
             }
             if !breaches.is_empty() {
                 let mut ra = 0.0_f64;

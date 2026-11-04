@@ -1,6 +1,6 @@
 //! The sliding-window engines exercised through the public store API.
 
-use quota_gate::{InMemoryStore, Store, REQUESTS};
+use quota_gate::{InMemoryStore, REQUESTS, Store};
 
 #[test]
 fn bucket_memory_is_bounded_regardless_of_traffic() {

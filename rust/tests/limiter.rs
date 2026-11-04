@@ -4,7 +4,7 @@
 use std::collections::HashMap;
 
 use quota_gate::{
-    estimate_cost, rate_limit_headers, rules_from_json, Acquire, LimitRule, Limiter, Scope,
+    Acquire, LimitRule, Limiter, Scope, estimate_cost, rate_limit_headers, rules_from_json,
 };
 
 fn token_limiter() -> Limiter {
@@ -76,9 +76,11 @@ fn multiple_windows_minute_ok_but_daily_trips() {
 
 #[test]
 fn retry_after_is_precise_in_exact_mode() {
-    let mut l = Limiter::new(vec![LimitRule::new("gpt-4o", 60.0)
-        .max_requests(1.0)
-        .precise(true)]);
+    let mut l = Limiter::new(vec![
+        LimitRule::new("gpt-4o", 60.0)
+            .max_requests(1.0)
+            .precise(true),
+    ]);
     l.try_acquire("gpt-4o", &Acquire::new().now(1000.0));
     let d = l.try_acquire("gpt-4o", &Acquire::new().now(1000.0));
     assert!(
@@ -90,9 +92,11 @@ fn retry_after_is_precise_in_exact_mode() {
 
 #[test]
 fn headers_render_backpressure() {
-    let mut l = Limiter::new(vec![LimitRule::new("gpt-4o", 60.0)
-        .max_requests(1.0)
-        .max_tokens(1000.0)]);
+    let mut l = Limiter::new(vec![
+        LimitRule::new("gpt-4o", 60.0)
+            .max_requests(1.0)
+            .max_tokens(1000.0),
+    ]);
     l.try_acquire("gpt-4o", &Acquire::new().tokens(10.0).now(0.0));
     let d = l.try_acquire("gpt-4o", &Acquire::new().tokens(10.0).now(0.0));
     let headers = rate_limit_headers(&d, None);
